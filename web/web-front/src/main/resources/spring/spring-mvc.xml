@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+<!--
+消费者的spring-mvc配置文件
+1.扫描component的注解包
+    springmvc RequestMapping注解 RestController注解 RequestParam注解  PathVariable注解 RequestBody注解
+    spring注解  IOC controller service repository 依赖注入 Autowired
+2.静态资源的默认select hander
+3.开启mvc注解驱动
+
+因为全部是异步请求 所以不需要视图解析器 springResourceTemplateResolver
+
+ -->
+
+    <context:component-scan base-package="com.atguigu" />
+
+    <!-- 没有匹配上的url全部按默认方式（就是直接访问）访问，避免拦截静态资源 -->
+    <mvc:default-servlet-handler/>
+    <!-- 开启mvc注解-->
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <!-- 配置Fastjson支持 -->
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>application/json</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+</beans>
